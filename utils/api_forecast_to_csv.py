@@ -23,5 +23,3 @@ def yeet_the_weather_data(valid_ciites, filename="forecast.csv",):
             writer.writeheader()
         writer.writeheader()
         writer.writerows(rows)
-
-    print(f"Forecast data exported successfully to {filepath}")
