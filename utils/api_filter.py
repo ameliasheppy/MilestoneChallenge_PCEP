@@ -1,5 +1,6 @@
 import requests
 from utils.api_key import API_KEY
+from utils.api_forecast_to_csv import yeet_the_weather_data
 
 # Run this with  python -m utils.api_filter bc it's a module :)
 
@@ -53,6 +54,8 @@ def main():
     print("Cities that match your vibe: ")
     for city, current_temperature in valid_ciites:
         print(f"{city}- {current_temperature}*F")
+
+    yeet_the_weather_data(valid_ciites)
 
 
 if __name__ == "__main__":
