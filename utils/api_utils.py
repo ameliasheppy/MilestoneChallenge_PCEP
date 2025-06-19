@@ -1,5 +1,6 @@
 from utils.api_key import API_KEY
 from datetime import datetime
+from utils.api_forecast_to_csv import yeet_the_weather_data
 import requests
 
 
@@ -45,6 +46,8 @@ def get_the_weather_data(city):
           Wind speed: {weather_info['wind_speed']} MPH
           Latitude and Longitude of {weather_info['city']} is {weather_info['coordinates']}
           """)
+
+    yeet_the_weather_data(forecast_info, weather_info["city"])
 
 
 def hold_weather_data(data):
