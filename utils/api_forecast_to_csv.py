@@ -2,24 +2,26 @@ import csv
 import os
 
 
-def yeet_the_weather_data(filtered_cities, filename="forecast.csv",):
+def yeet_the_weather_data(valid_ciites, filename="forecast.csv",):
     output_dir = "data"
     filepath = os.path.join(output_dir, filename)
-    fieldnames = ["City", "Temperature *F"]
+    fieldnames = ["City", "Temperature"]
 
-    # The table headers were super ugly. So I am cleaning them up:
-    pretty_table = []
-    for city, temp in filtered_cities:
-        pretty_table.append({
-            "City": city,
-            "Temperature *F": temp,
-        })
+    if not valid_ciites:
+        print("No cities to write")
+        return
 
-    # change the write mode to 'w' to overwrite the file each time
+    os.makedirs(output_dir, exist_ok=True)
+
+    file_exists = os.path.isfile(filepath)
+    rows = [{"City": city, "Temperature": temperature}
+            for city, temperature in valid_ciites]
+    # change the write mode to 'a' to append to the file each time
     with open(filepath, mode='w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        if not file_exists:
+            writer.writeheader()
         writer.writeheader()
-        for entry in pretty_table:
-            writer.writerow(entry)
+        writer.writerows(rows)
 
     print(f"Forecast data exported successfully to {filepath}")

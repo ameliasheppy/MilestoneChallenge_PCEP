@@ -1,20 +1,20 @@
-City,Temperature *F
-Orlando,84
-Miami,86
-Raleigh,83
-Seattle,53
+City,Temperature
+Orlando,86
+Miami,88
+Raleigh,85
+Seattle,55
 Memphis,70
-Columbus,72
-Milwaukee,70
-Albany,77
-Tulsa,76
-Jackson,53
-Cleveland,72
-Holden Beach,83
-Lexington,72
-Minneapolis,70
-Boise,61
-Denver,70
-Joplin,74
-Amarillo,72
-Tucson,87
+Columbus,73
+Milwaukee,72
+Albany,80
+Tulsa,81
+Jackson,55
+Cleveland,73
+Holden Beach,85
+Lexington,73
+Minneapolis,74
+Boise,64
+Denver,75
+Joplin,77
+Amarillo,76
+Tucson,89

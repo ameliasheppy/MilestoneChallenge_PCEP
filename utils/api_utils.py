@@ -3,13 +3,15 @@ from datetime import datetime
 from utils.api_forecast_to_csv import yeet_the_weather_data
 import requests
 
+# Run this with:
+# python -m utils.api_utils or main.py
+
 
 def did_my_key_make_it():
     print(f'Here is the key {API_KEY}')
 
 
 # The key can be printed to the console with:
-# python -m utils.api_utils
 # did_my_key_make_it()
 
 def city_to_search():
@@ -40,14 +42,17 @@ def get_the_weather_data(city):
     forecast_info = forecast(geolocation_data, weather_info['city'])
 
     print(f"""Current weather in {weather_info['city']} is:
-          Temperature: {weather_info['temperature']} F
+          Temperature: {weather_info['temperature']}
           Current Conditions: {weather_info['description']}
           Feels like: {weather_info['feels_like']}
           Wind speed: {weather_info['wind_speed']} MPH
           Latitude and Longitude of {weather_info['city']} is {weather_info['coordinates']}
           """)
 
-    yeet_the_weather_data(forecast_info, weather_info["city"])
+    city_and_temp = [
+        (weather_info["city"], round(weather_info["temperature"]))]
+
+    yeet_the_weather_data(city_and_temp, "forecast.csv")
 
 
 def hold_weather_data(data):

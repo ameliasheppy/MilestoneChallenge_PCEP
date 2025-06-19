@@ -55,6 +55,8 @@ def main():
     for city, current_temperature in valid_ciites:
         print(f"{city}- {current_temperature}*F")
 
+    print("DEBUG: ", valid_ciites)
+
     yeet_the_weather_data(valid_ciites)
 
 
