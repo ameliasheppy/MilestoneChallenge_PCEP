@@ -1,5 +1,4 @@
 from utils.api_key import API_KEY
-from datetime import datetime
 from utils.api_forecast_to_csv import yeet_the_weather_data
 import requests
 
@@ -16,43 +15,12 @@ def did_my_key_make_it():
 
 def city_to_search():
     city = input("What city do you want to weather data for? ")
-    print(f"Okay, we will search for Weather in {city}.")
+    print(f"Okay, we will search for weather in {city}.")
     return city
 
+# handy helper function!
 
-def get_the_weather_data(city):
-    get_lat_lon_url = f'http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}'
-    lat_lon_response = requests.get(get_lat_lon_url)
-    lat_lon_data = lat_lon_response.json()
-
-    if not lat_lon_data:
-        print("City not found, sorry! ")
-        return
-
-    latitude = lat_lon_data[0]["lat"]
-    longitude = lat_lon_data[0]["lon"]
-    geolocation_data = (latitude, longitude)
-
-    weather_data_url = f'http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={API_KEY}&units=imperial'
-    weather_res = requests.get(weather_data_url)
-    weather_data_for_city = weather_res.json()
-    print(weather_data_for_city)
-
-    weather_info = hold_weather_data(weather_data_for_city)
-    forecast_info = forecast(geolocation_data, weather_info['city'])
-
-    print(f"""Current weather in {weather_info['city']} is:
-          Temperature: {weather_info['temperature']}
-          Current Conditions: {weather_info['description']}
-          Feels like: {weather_info['feels_like']}
-          Wind speed: {weather_info['wind_speed']} MPH
-          Latitude and Longitude of {weather_info['city']} is {weather_info['coordinates']}
-          """)
-
-    city_and_temp = [
-        (weather_info["city"], round(weather_info["temperature"]))]
-
-    yeet_the_weather_data(city_and_temp, "forecast.csv")
+# use .get bc it helps with unpredictable of optional API data. If the key doesn't exist, returns None, helps to avoid KeyErrors.
 
 
 def hold_weather_data(data):
@@ -66,36 +34,43 @@ def hold_weather_data(data):
     }
 
 
-def forecast(my_fancy_tuple, city):
-    # unpack my tuple:
-    lat, lon = my_fancy_tuple
-    forecast_url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}&units=imperial"
-    response = requests.get(forecast_url)
-    if response.status_code != 200:
-        print(
-            f"OpenWeatherAPI request failed with status code {response.status_code}")
-        return []
-    forecast_res = response.json()
+def get_the_weather_data(city):
+    get_lat_lon_url = f'http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}'
+    # get the status code response, will it fail?!
+    lat_lon_response = requests.get(get_lat_lon_url)
+    # lat-long-data is the weather response.json() a WALL of info to wade through
+    lat_lon_data = lat_lon_response.json()
 
-    print("Keys in forecast response: ", forecast_res.keys())
+    # handle the possible API problems....
+    if not lat_lon_data:
+        print("City not found, sorry! ")
+        return
 
-    forecast_info = []
-    for day in forecast_res.get("list", [])[:5]:
-        ugly_date = day["dt_txt"]
-        date_to_strip = datetime.strptime(ugly_date, "%Y-%m-%d %H:%M:%S")
-        day_and_time = date_to_strip.strftime("%B %d at %I %p")
+    latitude = lat_lon_data[0]["lat"]
+    longitude = lat_lon_data[0]["lon"]
 
-        temp = day["main"]["temp"]
-        description = day["weather"][0]["description"]
+    weather_data_url = f'http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={API_KEY}&units=imperial'
+    # get the status code response, will it fail?!
+    weather_res = requests.get(weather_data_url)
+    # weather_res.json() is the actual weather data to sift through!
+    # verify that's what it is with:
+    # print(weather_res.json(), 'weather res.json()')
+    weather_data_for_city = weather_res.json()
 
-        forecast_info.append({
-            "dayandtime": day_and_time,
-            "temperature": temp,
-            "description": description
-        })
+    weather_info = hold_weather_data(weather_data_for_city)
 
-    print(f"\nOpenWeather 3 Hour Futurecast for {city}: \n")
-    for forecast in forecast_info:
-        print(
-            f"{forecast['dayandtime']}: {forecast['description'].capitalize()} -  {round(forecast['temperature'])}")
-    return forecast_info
+    print(f"""Current weather in {weather_info['city']} is:
+          Temperature: {weather_info['temperature']}
+          Current Conditions: {weather_info['description']}
+          Feels like: {weather_info['feels_like']}
+          Wind speed: {weather_info['wind_speed']} MPH
+          Latitude and Longitude of {weather_info['city']} is {weather_info['coordinates']}
+          """)
+
+# this is a list of tuples! I create a list, then have two elements in my immutable tuple. The city name and the temp, which I send to my .csv
+
+# each time this runs, I don't change the original tuple, I replace the var with a new tuple
+    city_and_temp = [
+        (weather_info["city"], round(weather_info["temperature"]))]
+
+    yeet_the_weather_data(city_and_temp, "forecast.csv")
