@@ -38,6 +38,8 @@ def filter_the_cities(input_temp):
 
     return cities_that_match_input
 
+# calling this bad boy main again. it's the main part of my code I want to run :)
+
 
 def main():
     try:
@@ -57,7 +59,8 @@ def main():
     for city, current_temperature in valid_ciites:
         print(f"{city}- {current_temperature}*F")
 
-    print("DEBUG: ", valid_ciites)
+    # my sanity check debuggin:
+    # print("DEBUG: ", valid_ciites)
 
     yeet_the_weather_data(valid_ciites)
 
