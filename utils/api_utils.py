@@ -66,11 +66,3 @@ def get_the_weather_data(city):
           Wind speed: {weather_info['wind_speed']} MPH
           Latitude and Longitude of {weather_info['city']} is {weather_info['coordinates']}
           """)
-
-# this is a list of tuples! I create a list, then have two elements in my immutable tuple. The city name and the temp, which I send to my .csv
-
-# each time this runs, I don't change the original tuple, I replace the var with a new tuple
-    city_and_temp = [
-        (weather_info["city"], round(weather_info["temperature"]))]
-
-    yeet_the_weather_data(city_and_temp, "forecast.csv")

@@ -7,11 +7,13 @@ from utils.api_forecast_to_csv import yeet_the_weather_data
 
 def is_it_hot_in_the_city(city):
     open_weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=imperial"
+    # get the status code res:
     res = requests.get(open_weather_url)
     if res.status_code != 200:
         print(
             f"Open weather request returned an HTTP status code of {res.status_code}")
         return None
+    # the weather data!
     data = res.json()
     # print(f"This is main from the api_filter file {data["main"]}")
     return data["main"]["temp"]
